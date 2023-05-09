@@ -1,8 +1,9 @@
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import "./styles/styles.css";
+import { JournalApp } from "./components/JournalApp";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-root.render(<h1>hola</h1>);
+root.render(<JournalApp />);
