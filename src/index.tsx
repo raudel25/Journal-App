@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import "./styles/styles.css";
+import "./styles/styles.scss";
 import { JournalApp } from "./components/JournalApp";
 
 const root = ReactDOM.createRoot(
