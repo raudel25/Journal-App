@@ -1,11 +1,23 @@
-import { provider, signInWithPopup, auth } from "../firebase/firebase-config";
+import {
+  provider,
+  signInWithPopup,
+  auth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword,
+} from "../firebase/firebase-config";
 import { types, Action } from "../types/types";
 
-export const a = () => {
+export const startSignInWithEmailAndPassword = (
+  email: string,
+  password: string
+) => {
   return (dispatch: any) => {
-    setTimeout(() => {
-      dispatch(login("1234", "pedro"));
-    }, 3000);
+    signInWithEmailAndPassword(auth, email, password)
+      .then(({ user }) => {
+        dispatch(login(user.uid, user.displayName));
+      })
+      .catch((error) => console.log(error));
   };
 };
 
@@ -15,6 +27,22 @@ export const googleLogin = () => {
       .then(({ user }) => {
         console.log(user);
         // dispatch(login(user.uid, user.displayName));
+      })
+      .catch((error) => console.log(error));
+  };
+};
+
+export const startRegisterWithEmailAndPassword = (
+  name: string,
+  email: string,
+  password: string
+) => {
+  return (dispatch: any) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async ({ user }) => {
+        await updateProfile(user, { displayName: name });
+
+        dispatch(login(user.uid, user.displayName));
       })
       .catch((error) => console.log(error));
   };

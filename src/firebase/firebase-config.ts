@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { signInWithPopup } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
 import { getAuth } from "firebase/auth";
 
@@ -19,4 +24,12 @@ const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 const auth = getAuth();
 
-export { db, auth, provider, signInWithPopup };
+export {
+  db,
+  auth,
+  provider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+};

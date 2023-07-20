@@ -4,13 +4,14 @@ import validator from "validator";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setError, unSetError } from "../../actions/ui";
+import { startRegisterWithEmailAndPassword } from "../../actions/auth";
 
 export const RegisterScreen = () => {
   const [formValues, handleInputChange] = useForm({
     name: "Raudel",
     email: "ragm@gmail.com",
-    password: "1234",
-    confirm: "1234",
+    password: "123456",
+    confirm: "123456",
   });
 
   const dispatch: Dispatch<any> = useDispatch();
@@ -23,7 +24,7 @@ export const RegisterScreen = () => {
     event.preventDefault();
 
     if (isValid()) {
-      dispatch(unSetError());
+      dispatch(startRegisterWithEmailAndPassword(name, email, password));
     }
   };
 
@@ -42,6 +43,8 @@ export const RegisterScreen = () => {
       dispatch(setError("Password should be at least 6 characters and match"));
       return false;
     }
+
+    dispatch(unSetError());
 
     return true;
   };
