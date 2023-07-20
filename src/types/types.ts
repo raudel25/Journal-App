@@ -1,6 +1,6 @@
 export type Action = {
   type: string;
-  payload: { uid: string; displayName: string };
+  payload: { uid: string; displayName: string | null };
 };
 
 export type State = { uid?: string; displayName?: string };
