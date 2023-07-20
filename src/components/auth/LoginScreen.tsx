@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import { a, googleLogin, login } from "../../actions/auth";
-import { Dispatch } from "redux";
+import { Dispatch } from "@reduxjs/toolkit";
 
 export const LoginScreen = () => {
   const [formValues, handleInputChange] = useForm({

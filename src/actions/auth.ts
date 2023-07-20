@@ -1,4 +1,3 @@
-import { error } from "console";
 import { provider, signInWithPopup, auth } from "../firebase/firebase-config";
 import { types, Action } from "../types/types";
 
@@ -14,7 +13,8 @@ export const googleLogin = () => {
   return (dispatch: any) => {
     signInWithPopup(auth, provider)
       .then(({ user }) => {
-        dispatch(login(user.uid, user.displayName));
+        console.log(user);
+        // dispatch(login(user.uid, user.displayName));
       })
       .catch((error) => console.log(error));
   };

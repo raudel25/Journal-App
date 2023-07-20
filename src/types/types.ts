@@ -3,9 +3,17 @@ export type Action = {
   payload: { uid: string; displayName: string | null };
 };
 
+export type ActionUi = {
+  type: string;
+  payload: string;
+};
+
 export type State = { uid?: string; displayName?: string };
+export type StateUi = { loading: boolean; msgError: string };
 
 export const types = {
   login: "[Auth] Login",
   logout: "[Auth] Logout",
+  uiSetError: "[Ui] Set Error",
+  uiUnSetError: "[Ui] Unset Error",
 };
