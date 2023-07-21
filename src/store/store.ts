@@ -3,10 +3,12 @@ import { authReducer } from "../reducers/authReducer";
 import thunk from "redux-thunk";
 import { useDispatch } from "react-redux";
 import { uiReducer } from "../reducers/uiReducer";
+import { notesReducer } from "../reducers/notesReducer";
 
 const reducer = combineReducers({
   auth: authReducer,
   ui: uiReducer,
+  notes: notesReducer,
 });
 
 export const store = configureStore({
@@ -16,6 +18,6 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof reducer>;
 
-export type AppDispatch = typeof store.dispatch
-export const useAppDispatch = () => useDispatch<AppDispatch>()
-export default store
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export default store;
