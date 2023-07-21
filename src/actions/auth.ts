@@ -10,6 +10,7 @@ import {
 import { AppDispatch } from "../store/store";
 import { types, ActionLog } from "../types/types";
 import { endLoading, startLoading } from "./ui";
+import alertMsg from "sweetalert2";
 
 export const startSignInWithEmailAndPassword = (
   email: string,
@@ -24,7 +25,7 @@ export const startSignInWithEmailAndPassword = (
         dispatch(endLoading());
       })
       .catch((error) => {
-        console.log(error);
+        alertMsg.fire("Error", error.message, "error");
         dispatch(endLoading());
       });
   };
@@ -53,7 +54,9 @@ export const startRegisterWithEmailAndPassword = (
 
         dispatch(login(user.uid, user.displayName));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        alertMsg.fire("Error", error.message, "error");
+      });
   };
 };
 
