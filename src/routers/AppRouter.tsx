@@ -6,6 +6,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
 import { useAppDispatch } from "../store/store";
 import { login } from "../actions/auth";
+import PublicRoutes from "./PublicRoute";
+import PrivateRoutes from "./PrivateRoutes";
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch();
@@ -31,8 +33,21 @@ export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/auth/*" element={<AuthRouter />}></Route>
-        <Route path="*" element={<JournalScreen />}></Route>
+        <Route
+          path="/auth/*"
+          element={
+            <PublicRoutes component={AuthRouter} isAuthenticated={isLogin} />
+          }
+        ></Route>
+        <Route
+          path="*"
+          element={
+            <PrivateRoutes
+              component={JournalScreen}
+              isAuthenticated={isLogin}
+            />
+          }
+        ></Route>
       </Routes>
     </BrowserRouter>
   );
