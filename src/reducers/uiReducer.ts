@@ -1,4 +1,4 @@
-import { StateUi, types } from "../types/types";
+import { ActionUi, StateUi, types } from "../types/types";
 
 const initialState = {
   loading: false,
@@ -7,7 +7,7 @@ const initialState = {
 
 export const uiReducer = (
   state: StateUi = initialState,
-  action: any
+  action: ActionUi
 ): StateUi => {
   switch (action.type) {
     case types.uiSetError:

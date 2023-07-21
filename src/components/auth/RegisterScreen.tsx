@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import validator from "validator";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 import { setError, unSetError } from "../../actions/ui";
 import { startRegisterWithEmailAndPassword } from "../../actions/auth";
+import { RootState, useAppDispatch } from "../../store/store";
 
 export const RegisterScreen = () => {
   const [formValues, handleInputChange] = useForm({
@@ -14,9 +14,9 @@ export const RegisterScreen = () => {
     confirm: "123456",
   });
 
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { msgError } = useSelector((state: any) => state.ui);
+  const { msgError } = useSelector((state: RootState) => state.ui);
 
   const { name, email, password, confirm } = formValues;
 
@@ -40,7 +40,7 @@ export const RegisterScreen = () => {
     }
 
     if (password !== confirm || password.length < 5) {
-      dispatch(setError("Password should be at least 6 characters and match"));
+      dispatch(setError("Password should be at least 5 characters and match"));
       return false;
     }
 

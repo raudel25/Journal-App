@@ -6,13 +6,14 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
 } from "../firebase/firebase-config";
+import { AppDispatch } from "../store/store";
 import { types, Action } from "../types/types";
 
 export const startSignInWithEmailAndPassword = (
   email: string,
   password: string
 ) => {
-  return (dispatch: any) => {
+  return (dispatch: AppDispatch) => {
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         dispatch(login(user.uid, user.displayName));
@@ -22,7 +23,7 @@ export const startSignInWithEmailAndPassword = (
 };
 
 export const googleLogin = () => {
-  return (dispatch: any) => {
+  return (dispatch: AppDispatch) => {
     signInWithPopup(auth, provider)
       .then(({ user }) => {
         console.log(user);
@@ -37,7 +38,7 @@ export const startRegisterWithEmailAndPassword = (
   email: string,
   password: string
 ) => {
-  return (dispatch: any) => {
+  return (dispatch: AppDispatch) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async ({ user }) => {
         await updateProfile(user, { displayName: name });

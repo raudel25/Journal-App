@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
-import { useDispatch } from "react-redux";
 import {
   googleLogin,
-  login,
   startSignInWithEmailAndPassword,
 } from "../../actions/auth";
 import { Dispatch } from "@reduxjs/toolkit";
+import { useAppDispatch } from "../../store/store";
 
 export const LoginScreen = () => {
   const [formValues, handleInputChange] = useForm({
@@ -14,7 +13,7 @@ export const LoginScreen = () => {
     password: "123456",
   });
 
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch: Dispatch<any> = useAppDispatch();
 
   const { email, password } = formValues;
 

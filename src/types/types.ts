@@ -8,7 +8,7 @@ export type ActionUi = {
   payload: string;
 };
 
-export type State = { uid?: string; displayName?: string };
+export type State = { uid?: string; displayName?: string | null };
 export type StateUi = { loading: boolean; msgError: string };
 
 export const types = {
