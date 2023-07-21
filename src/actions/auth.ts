@@ -35,10 +35,11 @@ export const googleLogin = () => {
   return (dispatch: AppDispatch) => {
     signInWithPopup(auth, provider)
       .then(({ user }) => {
-        console.log(user);
-        // dispatch(login(user.uid, user.displayName));
+        dispatch(login(user.uid, user.displayName));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        alertMsg.fire("Error", error.message, "error");
+      });
   };
 };
 
