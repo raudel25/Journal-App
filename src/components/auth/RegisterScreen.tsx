@@ -53,7 +53,7 @@ export const RegisterScreen = () => {
     <>
       <h3 className="auth__title">Register</h3>
 
-      {msgError !== "" && <div className="auth__alert-error">{msgError}</div>}
+      {msgError && <div className="auth__alert-error">{msgError}</div>}
 
       <form onSubmit={handleRegister}>
         <input

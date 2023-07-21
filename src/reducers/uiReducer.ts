@@ -14,7 +14,13 @@ export const uiReducer = (
       return { ...state, msgError: action.payload };
 
     case types.uiUnSetError:
-      return { ...state, msgError: "" };
+      return { ...state, msgError: null };
+
+    case types.startLoading:
+      return { ...state, loading: true };
+
+    case types.endLoading:
+      return { ...state, loading: false };
 
     default:
       return state;

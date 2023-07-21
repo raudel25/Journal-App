@@ -4,8 +4,9 @@ import {
   googleLogin,
   startSignInWithEmailAndPassword,
 } from "../../actions/auth";
-import { Dispatch } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 export const LoginScreen = () => {
   const [formValues, handleInputChange] = useForm({
@@ -13,9 +14,11 @@ export const LoginScreen = () => {
     password: "123456",
   });
 
-  const dispatch: Dispatch<any> = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const { email, password } = formValues;
+
+  const { loading } = useSelector((state: RootState) => state.ui);
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,7 +53,11 @@ export const LoginScreen = () => {
           onChange={handleInputChange}
         ></input>
 
-        <button type="submit" className="btn btn-primary btn-block">
+        <button
+          type="submit"
+          className="btn btn-primary btn-block"
+          disabled={loading}
+        >
           Login
         </button>
         <hr />

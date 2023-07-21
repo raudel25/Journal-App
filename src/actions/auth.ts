@@ -5,20 +5,28 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
+  signOut,
 } from "../firebase/firebase-config";
 import { AppDispatch } from "../store/store";
-import { types, Action } from "../types/types";
+import { types, ActionLog } from "../types/types";
+import { endLoading, startLoading } from "./ui";
 
 export const startSignInWithEmailAndPassword = (
   email: string,
   password: string
 ) => {
   return (dispatch: AppDispatch) => {
+    dispatch(startLoading());
+
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         dispatch(login(user.uid, user.displayName));
+        dispatch(endLoading());
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        dispatch(endLoading());
+      });
   };
 };
 
@@ -49,7 +57,20 @@ export const startRegisterWithEmailAndPassword = (
   };
 };
 
-export const login = (uid: string, displayName: string | null): Action => ({
+export const startLogout = () => {
+  return async (dispatch: AppDispatch) => {
+    await signOut(auth);
+
+    dispatch(logout());
+  };
+};
+
+export const login = (uid: string, displayName: string | null): ActionLog => ({
   type: types.login,
   payload: { uid, displayName },
+});
+
+export const logout = (): ActionLog => ({
+  type: types.logout,
+  payload: { uid: "", displayName: "" },
 });

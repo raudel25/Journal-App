@@ -5,6 +5,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
 import { getAuth } from "firebase/auth";
@@ -32,4 +34,6 @@ export {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  onAuthStateChanged,
+  signOut,
 };
