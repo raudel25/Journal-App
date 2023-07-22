@@ -20,6 +20,12 @@ export const notesReducer = (
           : null,
       };
 
+    case types.notesAddNew:
+      return {
+        ...state,
+        notes: [...state.notes].concat([action.payload.active!]),
+      };
+
     case types.notesSet:
       return {
         ...state,
@@ -27,7 +33,6 @@ export const notesReducer = (
       };
 
     case types.notesUpdated:
-      
       return {
         ...state,
         notes: state.notes.map((note) =>

@@ -10,6 +10,7 @@ const JournalEntry = (note: NoteId) => {
   const dispatch = useAppDispatch();
 
   const handleEntryClick = () => {
+    console.log(noteIdToNote(note));
     dispatch(activateNote(noteIdToNote(note), note.id));
   };
 

@@ -2,19 +2,22 @@ import { useSelector } from "react-redux";
 import NotesAppBar from "./NotesAppBar";
 import { RootState, useAppDispatch } from "../../store/store";
 import { useForm } from "../../hooks/useForm";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { activateNote } from "../../actions/notes";
 
 const NoteScreen = () => {
   const { active } = useSelector((state: RootState) => state.notes);
   const note = active!;
 
-  const [form, handleInputChange, reset] = useForm({
+  const [noteValues, setNoteValues] = useState({
     id: note.id,
+    date: note.date,
+  });
+
+  const [form, handleInputChange, reset] = useForm({
     title: note.title,
     body: note.body,
     imgUrl: note.imgUrl ? note.imgUrl : "",
-    date: note.date.toString(),
   });
 
   const noteId = useRef(note.id);
@@ -26,7 +29,9 @@ const NoteScreen = () => {
       reset({
         title: note.title,
         body: note.body,
+        imgUrl: note.imgUrl ? note.imgUrl : "",
       });
+      setNoteValues({ id: note.id, date: note.date });
 
       noteId.current = note.id;
     }
@@ -39,12 +44,12 @@ const NoteScreen = () => {
           title: form.title,
           body: form.body,
           imgUrl: form.imgUrl === "" ? undefined : form.imgUrl,
-          date: parseInt(form.date),
+          date: noteValues.date,
         },
-        form.id
+        noteValues.id
       )
     );
-  }, [form, dispatch]);
+  }, [form, noteValues, dispatch]);
 
   const { title, body } = form;
 
