@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import {
   db,
   collection,
@@ -61,7 +62,7 @@ export const setNotes = (notes: Array<NoteId>): ActionNote => ({
 });
 
 export const startSaveNote = (note: NoteId) => {
-  return async (_: AppDispatch, getState: any) => {
+  return async (dispatch: AppDispatch, getState: any) => {
     const uid = getState().auth.uid;
 
     if (!note.imgUrl) {
@@ -74,5 +75,13 @@ export const startSaveNote = (note: NoteId) => {
       doc(db, `${uid}/journal/notes/${note.id}`),
       noteToFirestore
     );
+
+    dispatch(refreshNote(note));
+    Swal.fire("Save", note.title, "success");
   };
 };
+
+export const refreshNote = (note: NoteId): ActionNote => ({
+  type: types.notesUpdated,
+  payload: { notes: [], active: note },
+});
