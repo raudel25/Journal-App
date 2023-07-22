@@ -8,7 +8,7 @@ import { useAppDispatch } from "../store/store";
 import { login } from "../actions/auth";
 import PublicRoutes from "./PublicRoute";
 import PrivateRoutes from "./PrivateRoutes";
-import { setNotes, startLoadingNotes } from "../actions/notes";
+import { startLoadingNotes } from "../actions/notes";
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ export const AppRouter = () => {
 
       setChecking(false);
     });
-  }, []);
+  }, [dispatch]);
 
   if (checking) return <h1>Espere ...</h1>;
 

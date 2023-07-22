@@ -1,5 +1,6 @@
 import { activateNote } from "../../actions/notes";
 import { useAppDispatch } from "../../store/store";
+import { noteIdToNote } from "../../types/convert";
 import { NoteId } from "../../types/types";
 import moment from "moment";
 
@@ -9,17 +10,7 @@ const JournalEntry = (note: NoteId) => {
   const dispatch = useAppDispatch();
 
   const handleEntryClick = () => {
-    dispatch(
-      activateNote(
-        {
-          title: note.title,
-          body: note.body,
-          imgUrl: note.imgUrl,
-          date: note.date,
-        },
-        note.id
-      )
-    );
+    dispatch(activateNote(noteIdToNote(note), note.id));
   };
 
   return (

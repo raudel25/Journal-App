@@ -1,5 +1,13 @@
-import { db, collection, addDoc, getDocs } from "../firebase/firebase-config";
+import {
+  db,
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  doc,
+} from "../firebase/firebase-config";
 import { AppDispatch } from "../store/store";
+import { noteIdToNote } from "../types/convert";
 import { ActionNote, Note, NoteId, types } from "../types/types";
 
 export const startNewNote = () => {
@@ -51,3 +59,20 @@ export const setNotes = (notes: Array<NoteId>): ActionNote => ({
   type: types.notesSet,
   payload: { notes, active: null },
 });
+
+export const startSaveNote = (note: NoteId) => {
+  return async (_: AppDispatch, getState: any) => {
+    const uid = getState().auth.uid;
+
+    if (!note.imgUrl) {
+      delete note.imgUrl;
+    }
+
+    const noteToFirestore = noteIdToNote(note);
+
+    await updateDoc(
+      doc(db, `${uid}/journal/notes/${note.id}`),
+      noteToFirestore
+    );
+  };
+};

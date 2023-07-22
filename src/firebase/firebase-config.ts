@@ -13,6 +13,8 @@ import {
   collection,
   addDoc,
   getDocs,
+  doc,
+  updateDoc,
 } from "firebase/firestore/lite";
 import { getAuth } from "firebase/auth";
 
@@ -44,4 +46,6 @@ export {
   collection,
   addDoc,
   getDocs,
+  updateDoc,
+  doc
 };
