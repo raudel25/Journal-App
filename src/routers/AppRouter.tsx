@@ -8,6 +8,7 @@ import { useAppDispatch } from "../store/store";
 import { login } from "../actions/auth";
 import PublicRoutes from "./PublicRoute";
 import PrivateRoutes from "./PrivateRoutes";
+import { setNotes, startLoadingNotes } from "../actions/notes";
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +20,8 @@ export const AppRouter = () => {
     onAuthStateChanged(auth, (user) => {
       if (user?.uid) {
         dispatch(login(user.uid, user.displayName));
+        dispatch(startLoadingNotes(user.uid));
+
         setIsLogin(true);
       } else {
         setIsLogin(false);

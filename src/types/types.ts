@@ -10,7 +10,7 @@ export type ActionUi = {
 
 export type ActionNote = {
   type: string;
-  payload: NoteId;
+  payload: StateNotes;
 };
 
 export type StateLog = { uid?: string; displayName?: string | null };
@@ -20,13 +20,13 @@ export type NoteId = {
   id: string;
   title: string;
   body: string;
-  imgUrl: string;
+  imgUrl?: string;
   date: number;
 };
 export type Note = {
   title: string;
   body: string;
-  imgUrl: string;
+  imgUrl?: string;
   date: number;
 };
 
@@ -44,7 +44,7 @@ export const types = {
 
   notesAddNew: "[Notes] NewNote",
   notesActive: "[Notes] SetActiveNote",
-  notesLoad: "[Notes] LoadNotes",
+  notesSet: "[Notes] SetNotes",
   notesUpdated: "[Notes] UpdateNote",
   notesUpImage: "[Notes] UpdatedImage",
   notesDeleted: "[Notes] DeleteNote",

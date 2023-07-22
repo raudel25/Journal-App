@@ -1,18 +1,29 @@
-const JournalEntry = () => {
+import { NoteId } from "../../types/types";
+import moment from "moment";
+
+const JournalEntry = (note: NoteId) => {
+  const date = moment(note.date);
+
   return (
     <div className="journal__entry pointer">
-      <div className="journal__entry-picture"></div>
+      {note.imgUrl && (
+        <div
+          className="journal__entry-picture"
+          style={{
+            backgroundSize: "cover",
+            backgroundImage: `url(${note.imgUrl})`,
+          }}
+        ></div>
+      )}
 
       <div className="journal__entry-body">
-        <p className="journal__entry-tittle">aa</p>
-        <p className="journal__entry-content">
-          aa,vjd.zx,l;dmv'd;mBzcv";,,bf',;ljandclk ;ldzv',;l lsfmv',;fsv
-        </p>
+        <p className="journal__entry-tittle">{note.title}</p>
+        <p className="journal__entry-content">{note.body}</p>
       </div>
 
       <div className="journal__entry-date-box">
-        <span>Monday</span>
-        <h4>25</h4>
+        <span>{date.format("dddd")}</span>
+        <h4>{date.format("Do")}</h4>
       </div>
     </div>
   );
