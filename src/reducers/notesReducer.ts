@@ -1,4 +1,4 @@
-import { StateNotes } from "../types/types";
+import { ActionNote, StateNotes, types } from "../types/types";
 
 const initialState = {
   notes: [],
@@ -7,9 +7,17 @@ const initialState = {
 
 export const notesReducer = (
   state: StateNotes = initialState,
-  action: any
+  action: ActionNote
 ): StateNotes => {
   switch (action.type) {
+    case types.notesActive:
+      return {
+        ...state,
+        active: {
+          ...action.payload,
+        },
+      };
+
     default:
       return state;
   }

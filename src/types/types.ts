@@ -8,16 +8,29 @@ export type ActionUi = {
   payload: string | null;
 };
 
+export type ActionNote = {
+  type: string;
+  payload: NoteId;
+};
+
 export type StateLog = { uid?: string; displayName?: string | null };
 export type StateUi = { loading: boolean; msgError: string | null };
-type Note = {
+
+export type NoteId = {
   id: string;
-  tittle: string;
+  title: string;
   body: string;
   imgUrl: string;
   date: number;
 };
-export type StateNotes = { notes: Array<Note>; active: null | Note };
+export type Note = {
+  title: string;
+  body: string;
+  imgUrl: string;
+  date: number;
+};
+
+export type StateNotes = { notes: Array<NoteId>; active: null | NoteId };
 
 export const types = {
   login: "[Auth] Login",
