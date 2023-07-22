@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { JournalScreen } from "../components/journal/JournalScreen";
 import { AuthRouter } from "./AuthRouter";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
 import { useAppDispatch } from "../store/store";
@@ -34,7 +34,7 @@ export const AppRouter = () => {
   if (checking) return <h1>Espere ...</h1>;
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route
           path="/auth/*"
@@ -52,6 +52,6 @@ export const AppRouter = () => {
           }
         ></Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
