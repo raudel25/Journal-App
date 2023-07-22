@@ -10,7 +10,7 @@ export type ActionUi = {
 
 export type ActionNote = {
   type: string;
-  payload: StateNotes;
+  payload: { notes: Array<NoteId>; note: null | NoteId };
 };
 
 export type StateLog = { uid?: string; displayName?: string | null };

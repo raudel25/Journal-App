@@ -7,12 +7,12 @@ import {
   updateDoc,
   doc,
 } from "../firebase/firebase-config";
-import { AppDispatch } from "../store/store";
+import { AppDispatch, RootState } from "../store/store";
 import { noteIdToNote } from "../types/convert";
 import { ActionNote, Note, NoteId, types } from "../types/types";
 
 export const startNewNote = () => {
-  return async (dispatch: AppDispatch, getState: any) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
     const uid = getState().auth.uid;
 
     const newNote = {
@@ -32,7 +32,7 @@ export const addNote = (note: Note, id: string): ActionNote => ({
   type: types.notesAddNew,
   payload: {
     notes: [],
-    active: {
+    note: {
       ...note,
       id: id,
     },
@@ -43,7 +43,7 @@ export const activateNote = (note: Note, id: string): ActionNote => ({
   type: types.notesActive,
   payload: {
     notes: [],
-    active: {
+    note: {
       ...note,
       id: id,
     },
@@ -70,11 +70,11 @@ export const startLoadingNotes =
 
 export const setNotes = (notes: Array<NoteId>): ActionNote => ({
   type: types.notesSet,
-  payload: { notes, active: null },
+  payload: { notes, note: null },
 });
 
 export const startSaveNote = (note: NoteId) => {
-  return async (dispatch: AppDispatch, getState: any) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
     const uid = getState().auth.uid;
 
     if (!note.imgUrl) {
@@ -95,5 +95,5 @@ export const startSaveNote = (note: NoteId) => {
 
 export const refreshNote = (note: NoteId): ActionNote => ({
   type: types.notesUpdated,
-  payload: { notes: [], active: note },
+  payload: { notes: [], note },
 });

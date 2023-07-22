@@ -13,9 +13,9 @@ export const notesReducer = (
     case types.notesActive:
       return {
         ...state,
-        active: action.payload.active
+        active: action.payload.note
           ? {
-              ...action.payload.active,
+              ...action.payload.note,
             }
           : null,
       };
@@ -23,7 +23,7 @@ export const notesReducer = (
     case types.notesAddNew:
       return {
         ...state,
-        notes: [...state.notes].concat([action.payload.active!]),
+        notes: [...state.notes].concat([action.payload.note!]),
       };
 
     case types.notesSet:
@@ -36,7 +36,7 @@ export const notesReducer = (
       return {
         ...state,
         notes: state.notes.map((note) =>
-          note.id === action.payload.active!.id ? action.payload.active! : note
+          note.id === action.payload.note!.id ? action.payload.note! : note
         ),
       };
 
