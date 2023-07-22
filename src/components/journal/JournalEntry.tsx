@@ -1,11 +1,29 @@
+import { activateNote } from "../../actions/notes";
+import { useAppDispatch } from "../../store/store";
 import { NoteId } from "../../types/types";
 import moment from "moment";
 
 const JournalEntry = (note: NoteId) => {
   const date = moment(note.date);
 
+  const dispatch = useAppDispatch();
+
+  const handleEntryClick = () => {
+    dispatch(
+      activateNote(
+        {
+          title: note.title,
+          body: note.body,
+          imgUrl: note.imgUrl,
+          date: note.date,
+        },
+        note.id
+      )
+    );
+  };
+
   return (
-    <div className="journal__entry pointer">
+    <div className="journal__entry pointer" onClick={handleEntryClick}>
       {note.imgUrl && (
         <div
           className="journal__entry-picture"

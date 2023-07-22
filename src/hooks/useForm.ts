@@ -4,9 +4,13 @@ interface FormValues {
   [key: string]: string;
 }
 
-type HandleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => void;
+type HandleInputChange = (
+  event:
+    | React.ChangeEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLTextAreaElement>
+) => void;
 
-type Reset = () => void;
+type Reset = (state: FormValues) => void;
 
 type UseForm = (
   initialState: FormValues
@@ -15,8 +19,8 @@ type UseForm = (
 export const useForm: UseForm = (initialState = {}) => {
   const [values, setValues] = useState<FormValues>(initialState);
 
-  const reset: Reset = () => {
-    setValues(initialState);
+  const reset: Reset = (state = initialState) => {
+    setValues(state);
   };
 
   const handleInputChange: HandleInputChange = ({ target }) => {
