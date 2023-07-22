@@ -12,7 +12,7 @@ import { noteIdToNote } from "../types/convert";
 import { ActionNote, Note, NoteId, types } from "../types/types";
 
 export const startNewNote = () => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
     const uid = getState().auth.uid;
 
     const newNote = {
@@ -21,10 +21,14 @@ export const startNewNote = () => {
       date: new Date().getTime(),
     };
 
-    const doc = await addDoc(collection(db, `${uid}/journal/notes`), newNote);
-
-    dispatch(activateNote(newNote, doc.id));
-    dispatch(addNote(newNote, doc.id));
+    addDoc(collection(db, `${uid}/journal/notes`), newNote)
+      .then((doc) => {
+        dispatch(activateNote(newNote, doc.id));
+        dispatch(addNote(newNote, doc.id));
+      })
+      .catch((error) => {
+        Swal.fire("Error", error.message, "error");
+      });
   };
 };
 
@@ -63,9 +67,13 @@ const loadNotes = async (uid: string) => {
 
 export const startLoadingNotes =
   (uid: string) => async (dispatch: AppDispatch) => {
-    const notes = await loadNotes(uid);
-
-    dispatch(setNotes(notes));
+    loadNotes(uid)
+      .then((notes) => {
+        dispatch(setNotes(notes));
+      })
+      .catch((error) => {
+        Swal.fire("Error", error.message, "error");
+      });
   };
 
 export const setNotes = (notes: Array<NoteId>): ActionNote => ({
@@ -74,7 +82,7 @@ export const setNotes = (notes: Array<NoteId>): ActionNote => ({
 });
 
 export const startSaveNote = (note: NoteId) => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
     const uid = getState().auth.uid;
 
     if (!note.imgUrl) {
@@ -83,13 +91,14 @@ export const startSaveNote = (note: NoteId) => {
 
     const noteToFirestore = noteIdToNote(note);
 
-    await updateDoc(
-      doc(db, `${uid}/journal/notes/${note.id}`),
-      noteToFirestore
-    );
-
-    dispatch(refreshNote(note));
-    Swal.fire("Save", note.title, "success");
+    updateDoc(doc(db, `${uid}/journal/notes/${note.id}`), noteToFirestore)
+      .then(() => {
+        dispatch(refreshNote(note));
+        Swal.fire("Save", note.title, "success");
+      })
+      .catch((error) => {
+        Swal.fire("Error", error.message, "error");
+      });
   };
 };
 
