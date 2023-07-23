@@ -6,12 +6,11 @@ import {
   getDocs,
   updateDoc,
   doc,
+  deleteDoc,
 } from "../firebase/firebase-config";
 import { AppDispatch, RootState } from "../store/store";
 import { noteIdToNote } from "../types/convert";
 import { ActionNote, Note, NoteId, types } from "../types/types";
-import { title } from "process";
-import { text } from "stream/consumers";
 
 export const startNewNote = () => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
@@ -144,11 +143,6 @@ export const startUploading =
     const { active } = getState().notes;
 
     Swal.showLoading();
-    // Swal.fire({
-    //   title: "Uploading...",
-    //   text: "Please Wait",
-    //   allowOutsideClick: false,
-    // });
 
     fileUpload(file)
       .then((url) => {
@@ -160,3 +154,22 @@ export const startUploading =
         Swal.fire("Error", error.message, "error");
       });
   };
+
+export const startDelete = (note: NoteId) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    const uid = getState().auth.uid;
+
+    deleteDoc(doc(db, `${uid}/journal/notes/${note.id}`))
+      .then(() => {
+        dispatch(deleteNote(note));
+      })
+      .catch((error) => {
+        Swal.fire("Error", error.message, "error");
+      });
+  };
+};
+
+export const deleteNote = (note: NoteId): ActionNote => ({
+  type: types.notesDeleted,
+  payload: { note, notes: [] },
+});

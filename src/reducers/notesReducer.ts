@@ -1,4 +1,4 @@
-import { ActionNote, NoteId, StateNotes, types } from "../types/types";
+import { ActionNote, StateNotes, types } from "../types/types";
 
 const initialState = {
   notes: [],
@@ -47,6 +47,14 @@ export const notesReducer = (
     case types.notesLogoutCleaning:
       return {
         notes: [],
+        active: null,
+      };
+
+    case types.notesDeleted:
+      return {
+        notes: state.notes.filter(
+          (note) => note.id !== action.payload.note!.id
+        ),
         active: null,
       };
 

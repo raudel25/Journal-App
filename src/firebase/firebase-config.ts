@@ -15,6 +15,7 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore/lite";
 import { getAuth } from "firebase/auth";
 
@@ -47,5 +48,6 @@ export {
   addDoc,
   getDocs,
   updateDoc,
-  doc
+  doc,
+  deleteDoc,
 };

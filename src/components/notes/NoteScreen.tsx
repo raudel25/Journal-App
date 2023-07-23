@@ -3,7 +3,7 @@ import NotesAppBar from "./NotesAppBar";
 import { RootState, useAppDispatch } from "../../store/store";
 import { useForm } from "../../hooks/useForm";
 import { useEffect, useRef, useState } from "react";
-import { activateNote } from "../../actions/notes";
+import { activateNote, startDelete } from "../../actions/notes";
 
 const NoteScreen = () => {
   const { active } = useSelector((state: RootState) => state.notes);
@@ -55,6 +55,10 @@ const NoteScreen = () => {
     );
   }, [form, noteValues, dispatch]);
 
+  const handleDelete = () => {
+    dispatch(startDelete(note));
+  };
+
   const { title, body } = form;
 
   return (
@@ -85,6 +89,10 @@ const NoteScreen = () => {
           </div>
         )}
       </div>
+
+      <button className="btn btn-danger" onClick={handleDelete}>
+        Delete
+      </button>
     </div>
   );
 };
