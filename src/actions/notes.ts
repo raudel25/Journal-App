@@ -106,3 +106,8 @@ export const refreshNote = (note: NoteId): ActionNote => ({
   type: types.notesUpdated,
   payload: { notes: [], note },
 });
+
+export const cleaningNotes = (): ActionNote => ({
+  type: types.notesLogoutCleaning,
+  payload: { notes: [], note: null },
+});

@@ -62,10 +62,14 @@ export const startRegisterWithEmailAndPassword = (
 };
 
 export const startLogout = () => {
-  return async (dispatch: AppDispatch) => {
-    await signOut(auth);
-
-    dispatch(logout());
+  return (dispatch: AppDispatch) => {
+    signOut(auth)
+      .then(() => {
+        dispatch(logout());
+      })
+      .catch((error) => {
+        alertMsg.fire("Error", error.message, "error");
+      });
   };
 };
 

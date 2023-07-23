@@ -2,13 +2,14 @@ import { useSelector } from "react-redux";
 import JournalEntries from "./JournalEntries";
 import { RootState, useAppDispatch } from "../../store/store";
 import { startLogout } from "../../actions/auth";
-import { startNewNote } from "../../actions/notes";
+import { cleaningNotes, startNewNote } from "../../actions/notes";
 
 const Sidebar = () => {
   const { displayName } = useSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
+    dispatch(cleaningNotes());
     dispatch(startLogout());
   };
 
