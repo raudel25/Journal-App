@@ -10,8 +10,8 @@ import { RootState } from "../../store/store";
 
 export const LoginScreen = () => {
   const [formValues, handleInputChange] = useForm({
-    email: "ragm@gmail.com",
-    password: "123456",
+    email: "",
+    password: "",
   });
 
   const dispatch = useAppDispatch();

@@ -8,10 +8,10 @@ import { RootState, useAppDispatch } from "../../store/store";
 
 export const RegisterScreen = () => {
   const [formValues, handleInputChange] = useForm({
-    name: "Raudel",
-    email: "ragm@gmail.com",
-    password: "123456",
-    confirm: "123456",
+    name: "",
+    email: "",
+    password: "",
+    confirm: "",
   });
 
   const dispatch = useAppDispatch();
