@@ -10,6 +10,8 @@ import {
 import { AppDispatch, RootState } from "../store/store";
 import { noteIdToNote } from "../types/convert";
 import { ActionNote, Note, NoteId, types } from "../types/types";
+import { title } from "process";
+import { text } from "stream/consumers";
 
 export const startNewNote = () => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
@@ -111,3 +113,50 @@ export const cleaningNotes = (): ActionNote => ({
   type: types.notesLogoutCleaning,
   payload: { notes: [], note: null },
 });
+
+const fileUpload = async (file: File) => {
+  const url = "https://api.cloudinary.com/v1_1/dq4qw7ibj/upload";
+
+  const formData = new FormData();
+  formData.append("upload_preset", "journal-app");
+  formData.append("file", file);
+
+  try {
+    const resp = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (resp.ok) {
+      const couldResp = await resp.json();
+
+      return couldResp.secure_url;
+    } else {
+      throw await resp.json();
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const startUploading =
+  (file: File) => (dispatch: AppDispatch, getState: () => RootState) => {
+    const { active } = getState().notes;
+
+    Swal.showLoading();
+    // Swal.fire({
+    //   title: "Uploading...",
+    //   text: "Please Wait",
+    //   allowOutsideClick: false,
+    // });
+
+    fileUpload(file)
+      .then((url) => {
+        dispatch(startSaveNote({ ...active!, imgUrl: url }));
+
+        Swal.close();
+      })
+      .catch((error) => {
+        Swal.fire("Error", error.message, "error");
+      });
+  };

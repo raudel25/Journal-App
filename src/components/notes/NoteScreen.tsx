@@ -12,15 +12,16 @@ const NoteScreen = () => {
   const [noteValues, setNoteValues] = useState({
     id: note.id,
     date: note.date,
+    imgUrl: note.imgUrl,
   });
 
   const [form, handleInputChange, reset] = useForm({
     title: note.title,
     body: note.body,
-    imgUrl: note.imgUrl ? note.imgUrl : "",
   });
 
   const noteId = useRef(note.id);
+  const noteImg = useRef(note.imgUrl);
 
   const dispatch = useAppDispatch();
 
@@ -29,11 +30,14 @@ const NoteScreen = () => {
       reset({
         title: note.title,
         body: note.body,
-        imgUrl: note.imgUrl ? note.imgUrl : "",
       });
-      setNoteValues({ id: note.id, date: note.date });
+      setNoteValues({ id: note.id, date: note.date, imgUrl: note.imgUrl });
 
       noteId.current = note.id;
+    }
+
+    if (note.imgUrl !== noteImg.current) {
+      setNoteValues({ id: note.id, date: note.date, imgUrl: note.imgUrl });
     }
   }, [note, reset]);
 
@@ -43,7 +47,7 @@ const NoteScreen = () => {
         {
           title: form.title,
           body: form.body,
-          imgUrl: form.imgUrl === "" ? undefined : form.imgUrl,
+          imgUrl: noteValues.imgUrl,
           date: noteValues.date,
         },
         noteValues.id
@@ -75,7 +79,11 @@ const NoteScreen = () => {
           onChange={handleInputChange}
         ></textarea>
 
-        {note.imgUrl && <img className="notes__image" />}
+        {noteValues.imgUrl && (
+          <div className="notes__image">
+            <img src={noteValues.imgUrl} />
+          </div>
+        )}
       </div>
     </div>
   );
