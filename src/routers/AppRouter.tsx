@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { JournalScreen } from "../components/journal/JournalScreen";
 import { AuthRouter } from "./AuthRouter";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase/firebase-config";
+import { supabase } from "../supabase/client";
 import { useAppDispatch } from "../store/store";
 import { login } from "../actions/auth";
 import PublicRoutes from "./PublicRoute";
@@ -17,16 +16,23 @@ export const AppRouter = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user?.uid) {
-        dispatch(login(user.uid, user.displayName));
-        dispatch(startLoadingNotes(user.uid));
-
-        setIsLogin(true);
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user && event === "SIGNED_IN") {
+        supabase
+          .from("users")
+          .select("full_name")
+          .eq("id", session.user.id)
+          .single()
+          .then(({ data: userResponse, error: userError }) => {
+            if (!userError) {
+              setIsLogin(true);
+              dispatch(login(session.user.id, userResponse.full_name));
+              dispatch(startLoadingNotes(session.user.id));
+            }
+          });
       } else {
         setIsLogin(false);
       }
-
       setChecking(false);
     });
   }, [dispatch]);
