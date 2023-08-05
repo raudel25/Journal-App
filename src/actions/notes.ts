@@ -1,20 +1,11 @@
 import Swal from "sweetalert2";
-import {
-  db,
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "../firebase/firebase-config";
 import { AppDispatch, RootState } from "../store/store";
-import { noteIdToNote } from "../types/convert";
 import { ActionNote, Note, NoteId, types } from "../types/types";
+import { supabase } from "../supabase/client";
 
 export const startNewNote = () => {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
-    const uid = getState().auth.uid;
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const idUser = getState().auth.uid;
 
     const newNote = {
       title: "",
@@ -22,14 +13,17 @@ export const startNewNote = () => {
       date: new Date().getTime(),
     };
 
-    addDoc(collection(db, `${uid}/journal/notes`), newNote)
-      .then((doc) => {
-        dispatch(activateNote(newNote, doc.id));
-        dispatch(addNote(newNote, doc.id));
-      })
-      .catch((error) => {
-        Swal.fire("Error", error.message, "error");
-      });
+    const { data, error } = await supabase
+      .from("notes")
+      .insert({ ...newNote, idUser })
+      .select();
+
+    if (error) {
+      Swal.fire("Error", error.message, "error");
+      return;
+    }
+
+    dispatch(addNote(newNote, data![0].id));
   };
 };
 
@@ -56,11 +50,25 @@ export const activateNote = (note: Note, id: string): ActionNote => ({
 });
 
 const loadNotes = async (uid: string) => {
-  const notesSnap = await getDocs(collection(db, `${uid}/journal/notes`));
   const notes: Array<NoteId> = [];
 
-  notesSnap.forEach((note) => {
-    notes.push({ id: note.id, ...note.data() } as NoteId);
+  const { data: notesSnap, error } = await supabase
+    .from("notes")
+    .select()
+    .eq("idUser", uid);
+
+  if (error) {
+    throw error.message;
+  }
+
+  notesSnap!.forEach((note) => {
+    notes.push({
+      id: note.id,
+      title: note.title,
+      body: note.body,
+      date: note.date,
+      imgUrl: note.imgUrl ? note.imgUrl : undefined,
+    } as NoteId);
   });
 
   return notes;
@@ -83,23 +91,25 @@ export const setNotes = (notes: Array<NoteId>): ActionNote => ({
 });
 
 export const startSaveNote = (note: NoteId) => {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
-    const uid = getState().auth.uid;
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const idUser = getState().auth.uid;
 
     if (!note.imgUrl) {
       delete note.imgUrl;
     }
 
-    const noteToFirestore = noteIdToNote(note);
+    const { error } = await supabase
+      .from("notes")
+      .update({ ...note, idUser })
+      .eq("id", note.id);
 
-    updateDoc(doc(db, `${uid}/journal/notes/${note.id}`), noteToFirestore)
-      .then(() => {
-        dispatch(refreshNote(note));
-        Swal.fire("Save", note.title, "success");
-      })
-      .catch((error) => {
-        Swal.fire("Error", error.message, "error");
-      });
+    if (error) {
+      Swal.fire("Error", error.message, "error");
+      return;
+    }
+
+    dispatch(refreshNote(note));
+    Swal.fire("Save", note.title, "success");
   };
 };
 
@@ -156,16 +166,13 @@ export const startUploading =
   };
 
 export const startDelete = (note: NoteId) => {
-  return (dispatch: AppDispatch, getState: () => RootState) => {
-    const uid = getState().auth.uid;
-
-    deleteDoc(doc(db, `${uid}/journal/notes/${note.id}`))
-      .then(() => {
-        dispatch(deleteNote(note));
-      })
-      .catch((error) => {
-        Swal.fire("Error", error.message, "error");
-      });
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { error } = await supabase.from("notes").delete().eq("id", note.id);
+    if (error) {
+      Swal.fire("Error", error.message, "error");
+      return;
+    }
+    dispatch(deleteNote(note));
   };
 };
 
