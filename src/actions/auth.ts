@@ -1,4 +1,3 @@
-import { provider, signInWithPopup, auth } from "../firebase/firebase-config";
 import { AppDispatch } from "../store/store";
 import { supabase } from "../supabase/client";
 import { types, ActionLog } from "../types/types";
@@ -40,13 +39,13 @@ export const startSignInWithEmailAndPassword = (
 
 export const googleLogin = () => {
   return (dispatch: AppDispatch) => {
-    signInWithPopup(auth, provider)
-      .then(({ user }) => {
-        dispatch(login(user.uid, user.displayName));
-      })
-      .catch((error) => {
-        alertMsg.fire("Error", error.message, "error");
-      });
+    // signInWithPopup(auth, provider)
+    //   .then(({ user }) => {
+    //     dispatch(login(user.uid, user.displayName));
+    //   })
+    //   .catch((error) => {
+    //     alertMsg.fire("Error", error.message, "error");
+    //   });
   };
 };
 

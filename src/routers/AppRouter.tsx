@@ -16,6 +16,25 @@ export const AppRouter = () => {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (!error && data.session) {
+        supabase
+          .from("users")
+          .select("full_name")
+          .eq("id", data.session.user.id)
+          .single()
+          .then(({ data: userResponse, error: userError }) => {
+            if (!userError) {
+              setIsLogin(true);
+              dispatch(login(data.session.user.id, userResponse.full_name));
+              dispatch(startLoadingNotes(data.session.user.id));
+            }
+          });
+      } else {
+        setIsLogin(false);
+      }
+      setChecking(false);
+    });
     supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user && event === "SIGNED_IN") {
         supabase

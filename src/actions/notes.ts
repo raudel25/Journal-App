@@ -15,7 +15,7 @@ export const startNewNote = () => {
 
     const { data, error } = await supabase
       .from("notes")
-      .insert({ ...newNote, idUser })
+      .insert({ ...newNote, id_user: idUser })
       .select();
 
     if (error) {
@@ -55,7 +55,7 @@ const loadNotes = async (uid: string) => {
   const { data: notesSnap, error } = await supabase
     .from("notes")
     .select()
-    .eq("idUser", uid);
+    .eq("id_user", uid);
 
   if (error) {
     throw error.message;
@@ -100,7 +100,7 @@ export const startSaveNote = (note: NoteId) => {
 
     const { error } = await supabase
       .from("notes")
-      .update({ ...note, idUser })
+      .update({ ...note, id_user: idUser })
       .eq("id", note.id);
 
     if (error) {
