@@ -35,6 +35,9 @@ export const AppRouter = () => {
       }
       setChecking(false);
     });
+  }, [dispatch]);
+
+  useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user && event === "SIGNED_IN") {
         supabase
@@ -56,7 +59,7 @@ export const AppRouter = () => {
     });
   }, [dispatch]);
 
-  if (checking) return <h1>Espere ...</h1>;
+  if (checking) return <h1>Wait ...</h1>;
 
   return (
     <HashRouter>

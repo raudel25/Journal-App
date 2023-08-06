@@ -37,18 +37,6 @@ export const startSignInWithEmailAndPassword = (
   };
 };
 
-export const googleLogin = () => {
-  return (dispatch: AppDispatch) => {
-    // signInWithPopup(auth, provider)
-    //   .then(({ user }) => {
-    //     dispatch(login(user.uid, user.displayName));
-    //   })
-    //   .catch((error) => {
-    //     alertMsg.fire("Error", error.message, "error");
-    //   });
-  };
-};
-
 export const startRegisterWithEmailAndPassword = (
   full_name: string,
   email: string,
